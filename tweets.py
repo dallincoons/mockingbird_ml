@@ -5,7 +5,7 @@ class Tweets:
     def clean(self):
         self.remove_urls()
         self.remove_empty_rows()
-        self.remove_retweets()
+        # self.remove_retweets()
         return self.tweets
 
     def remove_retweets(self):

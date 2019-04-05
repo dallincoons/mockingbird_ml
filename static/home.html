@@ -1,0 +1,202 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<link href="/static/assets/styles.css" type="text/css">
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: "Helvetica Neue LT Std", Arial, sans-serif;
+    }
+    body {
+        height: 100vh;
+    }
+    .main-wrapper {
+        display: grid;
+        grid-template-columns: .35fr 1fr 3fr;
+        height: 100%;
+    }
+
+    .generator-section {
+        grid-column-start: 2;
+        background: linear-gradient(to right bottom, #1dc8f1, #1da1f1);
+        display: grid;
+        justify-items: center;
+    }
+
+    .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 1rem;
+    }
+
+    .logo-img {
+        width: 100px;
+        height: 80px;
+    }
+
+    .logo-text {
+        color: #ffffff;
+        font-size: 1.5rem;
+    }
+
+    .tweet-section {
+        grid-column-start: 3;
+    }
+
+    .cls-wing-1{fill:#dfdfdf;}
+    .cls-wing-2{fill:#e3e3e3;}
+    .cls-wing-3{fill:#e7e7e7;}
+    .cls-wing-4{fill:#d6d6d6;}
+    .cls-wing-5{fill:#dbdbdb;}
+
+    .round-img {
+        border-radius: 100%;
+        width: 150px;
+        height: auto;
+    }
+
+    .tweet-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .tweet-quote {
+        width: 100%;
+        height: 100%;
+        margin: 4rem 0 0 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .tweet-text {
+        color: #ffffff;
+        position: absolute;
+        bottom: 50%;
+        z-index: 1;
+        width: 50%;
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .cls-msg{fill:#1da1f1;}
+
+    .message-background {
+        width: 60%;
+        z-index: -1;
+    }
+    .tweet-profile {
+        position: absolute;
+        top: -7%;
+        z-index: 2;
+    }
+
+    .round-profile {
+        border-radius: 100%;
+        border: 10px solid #ffffff;
+        width: 300px;
+        height: auto;
+    }
+    .cls-quotes{fill:#fff;}
+
+    .quote-marks {
+        width: 7%;
+        position: relative;
+        right: 20%;
+        top: 25%;
+    }
+
+    .quote-marks-bottom {
+        width: 7%;
+        position: relative;
+        left: 18%;
+        bottom: 25%;
+        z-index: 1;
+        transform: rotate(180deg);
+    }
+</style>
+
+<div id="app" class="main-wrapper">
+    <div class="generator-section">
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" class="logo-img" viewBox="0 0 20 20 center center">
+                <title>Mockingbird Icon</title>
+                <g id="bird" data-name="bird">
+                    <polygon class="cls-wing-1" points="15.31 53.13 49.9 16.62 50.21 50.2 15.31 53.13"/>
+                    <polygon class="cls-wing-2" points="88.27 12.63 49.9 16.62 50.21 50.2 88.27 12.63"/>
+                    <polygon class="cls-wing-2" points="34.72 64.47 15.31 53.13 50.21 50.2 34.72 64.47"/>
+                    <polygon class="cls-wing-3" points="51.35 72.12 50.21 50.2 34.72 64.47 51.35 72.12"/>
+                    <polygon class="cls-wing-4" points="84.55 50.79 51.35 72.12 50.21 50.2 58.4 42.11 84.55 50.79"/>
+                    <polygon class="cls-wing-3" points="32.1 35.4 19.74 32.24 15.31 53.13 32.1 35.4"/>
+                    <polygon class="cls-wing-4" points="1.45 36.31 19.74 32.24 15.31 53.13 1.45 36.31"/>
+                    <polygon class="cls-wing-3" points="0 46.3 5.95 41.77 1.45 36.31 0 46.3"/>
+                    <polygon class="cls-wing-5" points="21.51 32.69 33.46 11.25 71.21 0 62.27 15.33 49.9 16.62 32.1 35.4 21.51 32.69"/>
+                </g>
+            </svg>
+            <h1 class="logo-text">Mockingbird</h1>
+        </div>
+        <div class="generator trump" @click="getTweet">
+            <img class="round-img" src="/static/assets/img/trump.jpg">
+        </div>
+        <div class="generator bernie">
+            <img class="round-img" src="/static/assets/img/bernie.jpg">
+        </div>
+        <div class="generator mix">
+            <img class="round-img" src="/static/assets/img/trump-bernie.jpg">
+        </div>
+    </div>
+    <div class="tweet-section">
+        <div class="tweet-container">
+            <div class="tweet-quote">
+                <svg xmlns="http://www.w3.org/2000/svg" class="quote-marks" viewBox="0 0 132.79 92.19">
+                    <title>quote-marks</title>
+                    <path class="cls-quotes" d="M36.08,38.08A27.5,27.5,0,0,1,55.62,64.63c0,15-12.52,27.56-28.06,27.56A27.81,27.81,0,0,1,0,64.63c0-7.51,3-14,5.51-19L29.57,0h16Zm77.17,0a27.51,27.51,0,0,1,19.54,26.55c0,15-12.54,27.56-28.07,27.56A27.81,27.81,0,0,1,77.16,64.63c0-7.51,3-14,5.52-19l24-45.6h16Z"/>
+                </svg>
+                <h2 class="tweet-text">{{tweet}}</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" class="message-background" viewBox="0 0 955.59 837.68">
+                    <title>message-background</title>
+                    <path class="cls-msg" d="M845.83,678.72c-7.5,36.27-43.86,63.74-80.8,61l-17.61-1.28C710.47,735.8,654.5,758.43,623,778L541,828.89c-31.47,19.53-53.81,5.4-49.64-31.4l.14-1.33c4.18-36.81-22.64-78-59.58-80.7L125.66,693.13c-36.94-2.71-70.1-35.08-73.69-72L.32,104C-3.28,67.09,24.05,35.7,61.06,34.18L900.58.06c37-1.5,61.15,26.94,53.64,63.21Z"/>
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="quote-marks-bottom" viewBox="0 0 132.79 92.19">
+                    <title>quote-marks</title>
+                    <path class="cls-quotes" d="M36.08,38.08A27.5,27.5,0,0,1,55.62,64.63c0,15-12.52,27.56-28.06,27.56A27.81,27.81,0,0,1,0,64.63c0-7.51,3-14,5.51-19L29.57,0h16Zm77.17,0a27.51,27.51,0,0,1,19.54,26.55c0,15-12.54,27.56-28.07,27.56A27.81,27.81,0,0,1,77.16,64.63c0-7.51,3-14,5.52-19l24-45.6h16Z"/>
+                </svg>
+                <div class="tweet-profile">
+                    <img class="round-profile" src="/static/assets/img/trump.jpg">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    vue = new Vue({
+        el: '#app',
+        data() {
+            return {
+                tweet : '',
+                total_tweets : 0,
+                tweet_index : 0,
+            }
+        },
+
+        methods : {
+            getTweet() {
+                axios.get('/get-tweet?index=' + this.tweet_index)
+                    .then((response) => {
+                        this.tweet = response.data.tweet;
+                        this.total_tweets = response.data.total_tweets;
+                        this.tweet_index = response.data.index;
+                    });
+            }
+        }
+    });
+</script>

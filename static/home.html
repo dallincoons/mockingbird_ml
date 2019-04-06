@@ -11,6 +11,7 @@
     body {
         height: 100vh;
     }
+    [v-cloak] {display: none}
     .main-wrapper {
         display: grid;
         grid-template-columns: .35fr 1fr 3fr;
@@ -141,13 +142,13 @@
             </svg>
             <h1 class="logo-text">Mockingbird</h1>
         </div>
-        <div class="generator trump" @click="getTweet">
+        <div class="generator trump" @click="getTweet('trump')">
             <img class="round-img" src="/static/assets/img/trump.jpg">
         </div>
-        <div class="generator bernie">
+        <div class="generator bernie" @click="getTweet('bernie')">
             <img class="round-img" src="/static/assets/img/bernie.jpg">
         </div>
-        <div class="generator mix">
+        <div class="generator mix" @click="getTweet('monster')">
             <img class="round-img" src="/static/assets/img/trump-bernie.jpg">
         </div>
     </div>
@@ -158,7 +159,7 @@
                     <title>quote-marks</title>
                     <path class="cls-quotes" d="M36.08,38.08A27.5,27.5,0,0,1,55.62,64.63c0,15-12.52,27.56-28.06,27.56A27.81,27.81,0,0,1,0,64.63c0-7.51,3-14,5.51-19L29.57,0h16Zm77.17,0a27.51,27.51,0,0,1,19.54,26.55c0,15-12.54,27.56-28.07,27.56A27.81,27.81,0,0,1,77.16,64.63c0-7.51,3-14,5.52-19l24-45.6h16Z"/>
                 </svg>
-                <h2 class="tweet-text">{{tweet}}</h2>
+                <h2 class="tweet-text" v-cloak>{{tweet}}</h2>
                 <svg xmlns="http://www.w3.org/2000/svg" class="message-background" viewBox="0 0 955.59 837.68">
                     <title>message-background</title>
                     <path class="cls-msg" d="M845.83,678.72c-7.5,36.27-43.86,63.74-80.8,61l-17.61-1.28C710.47,735.8,654.5,758.43,623,778L541,828.89c-31.47,19.53-53.81,5.4-49.64-31.4l.14-1.33c4.18-36.81-22.64-78-59.58-80.7L125.66,693.13c-36.94-2.71-70.1-35.08-73.69-72L.32,104C-3.28,67.09,24.05,35.7,61.06,34.18L900.58.06c37-1.5,61.15,26.94,53.64,63.21Z"/>
@@ -167,8 +168,10 @@
                     <title>quote-marks</title>
                     <path class="cls-quotes" d="M36.08,38.08A27.5,27.5,0,0,1,55.62,64.63c0,15-12.52,27.56-28.06,27.56A27.81,27.81,0,0,1,0,64.63c0-7.51,3-14,5.51-19L29.57,0h16Zm77.17,0a27.51,27.51,0,0,1,19.54,26.55c0,15-12.54,27.56-28.07,27.56A27.81,27.81,0,0,1,77.16,64.63c0-7.51,3-14,5.52-19l24-45.6h16Z"/>
                 </svg>
-                <div class="tweet-profile">
-                    <img class="round-profile" src="/static/assets/img/trump.jpg">
+                <div class="tweet-profile" v-cloak>
+                    <img class="round-profile" src="/static/assets/img/trump.jpg" v-if="author == 'trump'">
+                    <img class="round-profile" src="/static/assets/img/bernie.jpg" v-if="author == 'bernie'">
+                    <img class="round-profile" src="/static/assets/img/trump-bernie.jpg" v-if="author == 'monster'">
                 </div>
             </div>
 
@@ -183,19 +186,28 @@
         data() {
             return {
                 tweet : '',
+                author : 'trump',
                 total_tweets : 0,
                 tweet_index : 0,
+                trump_tweet_index : 0,
+                bernie_tweet_index : 0,
+                monster_tweet_index : 0
             }
         },
 
         methods : {
-            getTweet() {
-                axios.get('/get-tweet?index=' + this.tweet_index)
+            getTweet(author) {
+                axios.get('/get-tweet?index=' + this[author + '_tweet_index'] + '&author=' + author)
                     .then((response) => {
                         this.tweet = response.data.tweet;
                         this.total_tweets = response.data.total_tweets;
-                        this.tweet_index = response.data.index;
+                        this[author + '_tweet_index'] = response.data.index;
                     });
+                this.changeTweeter(author)
+            },
+            changeTweeter(author) {
+                this.author = author;
+
             }
         }
     });
